@@ -29,7 +29,7 @@ void main(string[] args) {
 		defaultGetoptPrinter("usage: " ~ args[0] ~ " (-d destination | -c config.json) [source]", opt.options);
 		writeln("a named folder contains only folders which share the same structure with eachother.");
 		writeln("if no source is provided, the config will be output.");
-		writeln("otherwise, a smart merge map will be generated and output");
+		writeln("otherwise, a smart merge map will be generated and output.");
 		return;
 	}
 	args.popFront();
