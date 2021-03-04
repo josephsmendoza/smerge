@@ -8,7 +8,7 @@ import std.path;
 import std.file;
 
 void main(string[] args) {
-	Config conf;
+	SMerge conf=new SMerge;
 	string destination;
 	string sourceName;
 	string configFile;
@@ -17,7 +17,7 @@ void main(string[] args) {
 	auto opt=getopt(args, config.passThrough, config.caseSensitive,
 		"n|name","package name",&sourceName,
 		"c|config","json config file",&configFile,
-		"s|skip","file glob to skip, can be used multiple times.",&skip,
+		"s|skip","file glob to skip, can be used multiple times.",&(conf.skip),
 		"d|destination","absolute path to destination",&destination,
 		"N|named","named destination subfolder, can be used multiple times.",&(conf.nameDirs),
 		"F|fallback","fallback destination subdirectory",&(conf.fallback),
@@ -34,7 +34,7 @@ void main(string[] args) {
 	}
 	args.popFront();
 	if (!configFile.empty) {
-		Config aconf=configFile.readText().deserialize!Config();
+		SMerge aconf=configFile.readText().deserialize!SMerge();
 		if (conf.fallback.empty) {
 			conf.fallback = aconf.fallback;
 		}
@@ -44,13 +44,13 @@ void main(string[] args) {
 		}
 	}
 	if(conf.anchorMap.empty && !destination.empty){
-		conf.anchorMap = generateAnchorMap(destination, conf);
+		conf.anchorMap = conf.generateAnchorMap(destination);
 	}
 	if(!absolute){
 		destination="";
 	}
 	if (!args.empty) {
-		string[string] packageMap=getPackageMap(args[0], conf, sourceName, destination);
+		string[string] packageMap=conf.getPackageMap(args[0], sourceName, destination);
 		packageMap.serializeToJsonPretty().writeln();
 	} else {
 		conf.serializeToJsonPretty().writeln();
