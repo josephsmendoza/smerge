@@ -1,5 +1,5 @@
 ## Smart Merge
-This is a utility to help resolve folder merges.
+This is a utility to help resolve folder merges for package managers.
 ```
 usage: smerge (-d destination | -c config.json) [source]
 -n        --name package name
